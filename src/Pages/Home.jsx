@@ -1,4 +1,5 @@
 import IconArrowRight from "../Components/Icons/IconArrowRight";
+import PizzaImage from '../assets/images/besthomemadepizzahero.png'
 
 function Home() {
     return (
@@ -22,6 +23,9 @@ function Home() {
                         </span>
                         
                     </button>
+                </div>
+                <div>
+                    <img src={PizzaImage} alt="" className="w-[550px] h-[550px]"/>
                 </div>
             </section>
         </div>
