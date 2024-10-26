@@ -1,5 +1,7 @@
 import IconArrowRight from "../Components/Icons/IconArrowRight";
 import PizzaImage from '../assets/images/besthomemadepizzahero.png'
+import CookingImage from '../assets/images/cooking1.jpg'
+import Checkbox from '../Components/Icons/Checkbox'
 
 function Home() {
     return (
@@ -26,6 +28,62 @@ function Home() {
                 </div>
                 <div>
                     <img src={PizzaImage} alt="" className="w-[550px] h-[550px]"/>
+                </div>
+            </section>
+
+            <section className="py-4 mt-6 bg-gradient-to-r from-amber-50 to-orange-300">
+                <div className="container flex flex-col md:flex-row">
+                    <div className="flex flex-col items-center justify-center rounded-lg lg:w-1/2">
+                        <img 
+                        src={CookingImage} alt="" 
+                        width={500}
+                        className="rounded-lg"
+                        />
+                        
+                    </div>
+                    <div className="flex flex-col flex-wrap text-center lg:py-6 lg:w-1/2 lg:pl-12 lg:text-left">
+                        <div className="flex flex-col items-center lg:items:start">
+
+                            <div>
+                                <h2 className="mb-2 text-5xl font-extrabold text-transparent title-font bg-gradient-to-r from-orange-600 to=orange-300 bg-clip-text">
+                                    Cooked by the best <br /> chefs in the world
+                                </h2>
+                                <p className="text-base leading-relaxed text-[#6B7280]">
+                                    There are many benefits regarding to that but the main ones are:
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="w-full p-1">
+                            <div className="flex items-center h-full p-2 text-2xl rounded">
+                                <Checkbox className="text-[#F38339] w-10 h-10 mr-4" />
+                                <span className="font-bold">
+                                Perfect Taste
+                                </span>
+                            </div>
+                            
+                        </div>
+                        <div className="w-full p-1">
+                            <div className="flex items-center h-full p-2 text-2xl rounded">
+                                <Checkbox className="text-[#F38339] w-10 h-10 mr-4" />
+                                <span className="font-bold">
+                                Prepared quickly
+                                </span>
+                            </div>
+                            
+                        </div>
+                        <div className="w-full p-1">
+                            <div className="flex items-center h-full p-2 text-2xl rounded">
+                                <Checkbox className="text-[#F38339] w-10 h-10 mr-4" />
+                                <span className="font-bold">
+                                Food hygiene guaranteed
+                                </span>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
                 </div>
             </section>
         </div>
