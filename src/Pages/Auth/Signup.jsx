@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 function Signup(){
     return(
         <>
@@ -7,8 +9,8 @@ function Signup(){
                     <svg
                     xmlns="http://www.w3.org/2000/svg"
                     xmlnsXlink="http://www.w3.org/1999/xlink"
-                    width="500"
-                    height="400"
+                    width="869.99994"
+                    height="520.13854"
                     viewBox="0 0 550.59998 412.44495"
                     >
                     <path
@@ -176,7 +178,7 @@ function Signup(){
                         </div>
                         <button className="w-full px-8 py-2 text-lg text-white bg-yellow-500 border-0 rounded focus:outline-none hover:bg-yellow-600 mt-5">Sign up</button>
                         <p className="mt-3 text-xs text-gray-500">Already have an account? 
-                        <a href="/login" className="text-yellow-500 ml-2">Login</a>
+                        <Link to="/auth/login" className="text-yellow-500 ml-2">Login</Link>
                         </p>
                     </form>
                 </div>
