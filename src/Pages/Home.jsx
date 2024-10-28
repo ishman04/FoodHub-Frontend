@@ -30,7 +30,7 @@ function Home() {
                     </button>
                 </div>
                 <div>
-                    <img src={PizzaImage} alt="" className="w-[550px] h-[550px]"/>
+                    <img src={PizzaImage} alt="" className="w-[650px] h-[650px]"/>
                 </div>
             </section>
 
