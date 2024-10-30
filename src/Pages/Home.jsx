@@ -21,7 +21,7 @@ function Home() {
                             {String.fromCodePoint(0x1F60B)}
                         </h1>
                     </div>
-                    <p className="pb-4 text-[#6B7280]">Enjoy the pizza of the town from comfort of your home</p>
+                    <p className="pb-4 text-[#6B7280]">Enjoy the best pizza of the town from comfort of your home</p>
 
                     <button className="flex items-center px-4 py-2 text-white bg-orange-400 rounded-md hover:bg-orange-500 group">
                         Order Now
