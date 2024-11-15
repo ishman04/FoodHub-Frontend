@@ -8,8 +8,28 @@ const initialState = {
     data: ('data', {}),
 }
 
-// Thunk => asyncronous action
+// Flow for async requests in redux toolkit :
+// Component Dispatches a Thunk (loginUser(loginData))
+// This happens when a user triggers an event (like a login).
+// Thunk Performs Async Operation (e.g., API Call)
+// On success, it returns data as action.payload.
+// On failure, it returns an error as action.error.
+// extraReducers Handle Thunk States
+// Pending: Set loading state.
+// Fulfilled: Update the store with successful data, clear loading.
+// Rejected: Capture error, clear loading.
+// Store Updates, Components Re-render
+// useSelector hooks read the updated state, and components reflect changes.
 
+// Flow for sync requests using redux toolkit :
+// Component Dispatches a Synchronous Action
+// Triggered by user input, an event, or a UI action.
+// Reducer Defined in Slice Updates State Immediately
+// Reducers in the slice handle this state update directly (no async lifecycle actions are needed).
+// Store Notifies Components of State Change
+// Components using useSelector are automatically re-rendered with the updated state.
+
+// We have jwt token stored in a cookie in the backend and have loggedin state stored in local storage. It allows us to stay logged in even if browser is closed. we stay logged in until jwt expires or user logs out manually 
 export const createAccount = createAsyncThunk('/auth/createAccount', async(data) => {
     console.log("incoming data to the thunk", data)
     try {

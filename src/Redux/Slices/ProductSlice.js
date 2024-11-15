@@ -8,35 +8,49 @@ const initialState = {
 }
 
 export const getAllProducts = createAsyncThunk('/products/getAll', async () => {
-    const response = await axiosInstance.get('/product');
-    
-    // Handle toast separately from the data flow
-    toast.promise(Promise.resolve(response), {
-        loading: 'Loading all the products',
-        error: 'Something went wrong, cannot load products',
-        success: 'Products loaded successfully',
-    });
-    
-    return response.data;
+    try {
+        const products = axiosInstance.get('/product');
+        toast.promise(products, {
+            loading: 'Loading all the products',
+            error: 'Something went wrong',
+            success: 'Products loaded successfully',
+        });
+        const apiResponse = await products;
+        console.log(apiResponse)
+        return apiResponse.data
+    } catch(error) {
+        console.log(error);
+        toast.error('Something went wrong');
+    }
 });
+
+export const getProductDetails = createAsyncThunk('/products/getDetails', async(id)=>{
+    try {
+        const product = axiosInstance.get(`/product/${id}`);
+        toast.promise(product, {
+            loading: 'Loading the product',
+            error: 'Something went wrong',
+            success: 'Product loaded successfully',
+        });
+        const apiResponse = await product;
+        return apiResponse.data
+    } catch(error) {
+        console.log(error);
+        toast.error('Something went wrong');
+    }
+})
 
 const ProductSlice = createSlice({
     name: 'product',
     initialState,
     reducers: {},
-    extraReducers: (builder) => {builder
-    .addCase(getAllProducts.pending, (state) => {
-        console.log('Loading products...');
-    })
-    .addCase(getAllProducts.fulfilled, (state, action) => {
-        console.log('Action payload:', action.payload);
-        state.productsData = action?.payload?.data;
-    })
-    .addCase(getAllProducts.rejected, (state, action) => {
-        console.log('Error loading products:', action.error);
-        toast.error('Something went wrong');
-    });
-}
+    extraReducers: (builder) => {
+        builder
+        .addCase(getAllProducts.fulfilled, (state, action) => {
+            console.log("action",action.payload);
+            state.productsData = action?.payload?.data;
+        });
+    }
 });
 
 export default ProductSlice.reducer;

@@ -3,6 +3,7 @@ import PizzaLogo from '../assets/images/Pizza-logo.png'
 import Footer from '../Components/Footer'
 import { Link,useNavigate } from 'react-router-dom'
 import { logout } from '../Redux/Slices/AuthSlice'
+import cart from '../Components/SVGs/undraw_empty_cart_co35.svg'
 
 function Layout({children}){
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn)
@@ -12,6 +13,7 @@ function Layout({children}){
         e.preventDefault();
         dispatch(logout());
     }
+    const {cartsData} = useSelector((state)=>state.cart)
 
     return (
         <div>
@@ -40,13 +42,24 @@ function Layout({children}){
                     </ul>
                 </div>
                 <div>
-                    <ul>
+                    <ul className='flex flex-row justify-center items-center gap-4'>
                         <li>
                             {isLoggedIn ? (
                                 <Link onClick={handleLogout}>Logout</Link>
                             ) : (
                                 <Link to={'/auth/login'}>Login</Link>
                             ) }
+                        </li>
+                        <li className='hover:text-[#FF9110]'>
+                            {isLoggedIn &&
+                                (<Link to={'/cart'}>
+                                    <div className='flex items-center '>
+                                        <img src={cart} className='w-8 h-8' />
+                                        {' '}
+                                       <p className='text-black'> {cartsData?.items?.length || 0} </p> 
+                                    </div>
+                                </Link>
+                        )}
                         </li>
                     </ul>
                 </div>
