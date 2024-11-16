@@ -4,6 +4,23 @@ import { getCartDetails, removeProductFromCart } from "../../Redux/Slices/CartSl
 import Layout from "../../Layouts/Layout";
 import { Link } from "react-router-dom";
 
+// useState and Re-renders:
+// useState triggers a re-render of the entire component when the state value changes.
+// When you call a state updater function (like setCount or setName), React schedules a re-render of the component to reflect the new state.
+// However, when the component re-renders, React doesn't re-execute the entire component function from scratch. Instead, React will:
+
+// Re-render the component.
+// Preserve the component's state and variables between renders (React internally optimizes this with its virtual DOM).
+// Execute any useEffect hooks based on dependency changes.
+// 2. useEffect and Re-renders:
+// useEffect does not trigger a re-render. It simply runs the code inside it after the component has been rendered or after specific dependencies have changed.
+// useEffect allows you to perform side effects, such as data fetching or updating the DOM, but it does not re-render the component. It runs after React updates the DOM following a state change.
+// Key Differences:
+// State Change (useState):
+// When you call setState, React re-renders the component because it needs to reflect the updated state.
+
+// Effect (useEffect):
+// When a dependency of useEffect changes, the effect runs again. But it does not trigger a full re-render of the component. Instead, React updates the DOM based on state/prop changes, and the effect runs to handle the side effects.
 function CartDetails() {
   const [cartDetails, setCartDetails] = useState(null);
   const dispatch = useDispatch();
@@ -25,7 +42,7 @@ function CartDetails() {
       setCartDetails(updatedDetails?.payload?.data || {});
     }
   }
-
+//calculated after each re render of component
   const cartItems = cartDetails?.items || [];
   const totalPrice = cartItems.reduce(
     (acc, item) => acc + item?.quantity * item?.product?.price,

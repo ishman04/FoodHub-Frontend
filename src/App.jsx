@@ -11,6 +11,7 @@ import ProductDetails from './Pages/Products/ProductDetails'
 import CartDetails from './Pages/Cart/CartDetails'
 import OrderSuccess from './Pages/Order/OrderSuccess'
 import Order from './Pages/Order/Order'
+import RequireAuth from './Components/Auth/RequireAuth'
 
 function App() {
   return (
@@ -23,12 +24,15 @@ function App() {
 
         <Route path='/admin/addProduct' element= {<AddProduct />} />
         <Route path='*' element={<NotFound />} />
-        {/* ProductId will be passes automatically to ProductDetails component using useParams */}
+
+        <Route element={<RequireAuth/>}>
+          {/* ProductId will be passes automatically to ProductDetails component using useParams */}
         <Route path='/product/:productId' element={<ProductDetails />} /> 
         <Route path='/cart' element={<CartDetails />} />
         <Route path='/order' element={<Order />} />
-
           <Route path='/order/success' element={<OrderSuccess />} />
+        </Route>
+        
       </Routes>
     </>
   )

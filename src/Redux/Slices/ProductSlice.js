@@ -16,7 +16,6 @@ export const getAllProducts = createAsyncThunk('/products/getAll', async () => {
             success: 'Products loaded successfully',
         });
         const apiResponse = await products;
-        console.log(apiResponse)
         return apiResponse.data
     } catch(error) {
         console.log(error);

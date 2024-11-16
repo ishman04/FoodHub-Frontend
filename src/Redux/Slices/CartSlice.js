@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import toast from "react-hot-toast";
 import axiosInstance from "../../helpers/axiosInstance";
+import { useDispatch } from "react-redux";
+import { logout } from "./AuthSlice";
 
 const initialState = {
     cartsData: ""
 }
 
-export const addProductToCart = createAsyncThunk('/cart/addProduct', async(productId)=>{
+export const addProductToCart = createAsyncThunk('/cart/addProduct', async(productId,_,thunkAPI)=>{
     try {
         const products = axiosInstance.post(`/carts/add/${productId}`);
         toast.promise(products, {
@@ -18,6 +20,10 @@ export const addProductToCart = createAsyncThunk('/cart/addProduct', async(produ
         console.log("API Response:", apiResponse);
         return apiResponse.data
     } catch(error) {
+        if(error?.status===401){
+            toast.error('Please login to view cart')
+            await thunkAPI.dispatch(logout())
+        }
         console.log("api",error);
         toast.error('Something went wrong');
     }
@@ -40,7 +46,7 @@ export const removeProductFromCart = createAsyncThunk('/cart/removeProduct', asy
     }
 })
 
-export const getCartDetails = createAsyncThunk('/cart/getCart', async()=>{
+export const getCartDetails = createAsyncThunk('/cart/getCart', async(_,thunkAPI)=>{
     try {
         const products = axiosInstance.get(`/carts`);
         toast.promise(products, {
@@ -52,6 +58,10 @@ export const getCartDetails = createAsyncThunk('/cart/getCart', async()=>{
         return apiResponse.data
     } catch(error) {
         console.log(error);
+        if(error?.status===401){
+            toast.error('Please login to view cart')
+            await thunkAPI.dispatch(logout())
+        }
         toast.error('Something went wrong');
     }
 })
@@ -67,6 +77,7 @@ const cartSlice = createSlice({
         .addCase(getCartDetails.fulfilled, (state,action)=>{
             state.cartsData = action?.payload?.data
         })
+        .addCase(getCartDetails.rejected, (state,action) => {})
         
     }
 })
