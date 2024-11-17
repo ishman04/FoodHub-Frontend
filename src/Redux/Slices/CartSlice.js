@@ -21,7 +21,7 @@ export const addProductToCart = createAsyncThunk('/cart/addProduct', async(produ
         return apiResponse.data
     } catch(error) {
         if(error?.status===401){
-            toast.error('Please login to view cart')
+            toast.error('Please login to add to cart')
             await thunkAPI.dispatch(logout())
         }
         console.log("api",error);

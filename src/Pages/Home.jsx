@@ -17,7 +17,8 @@ function Home() {
         dispatch(getAllProducts());
     },[])
     const {productsData} = useSelector((state)=>state.product)
-
+    const scrollToSection = ()=> {document.getElementById("target").scrollIntoView({behavior: "smooth"})
+}
     return (
         <Layout>
         <div>
@@ -33,7 +34,7 @@ function Home() {
                     </div>
                     <p className="pb-4 text-[#6B7280]">Enjoy the best pizza of the town from comfort of your home</p>
 
-                    <button className="flex items-center px-4 py-2 text-white bg-orange-400 rounded-md hover:bg-orange-500 group">
+                    <button onClick={scrollToSection} className="flex items-center px-4 py-2 text-white bg-orange-400 rounded-md hover:bg-orange-500 group">
                         Order Now
                         <span className="inline-block ml-2 transition-transform ease-in-out group-hover:translate-x-2">
                             <IconArrowRight />
@@ -177,7 +178,10 @@ function Home() {
                 </div>
             </section>
 
-            <div className="mx-auto">
+            <div id="target" className="mx-auto mt-20">
+                <h1 className="mb-2 text-5xl font-bold text-transparent title-font bg-gradient-to-r from-orange-600 to-orange-300 bg-clip-text text-center mb-20">
+                    Menu
+                </h1>
                 <div className="flex flex-wrap justify-center">
                     {productsData.map((item) => {
                         return (
