@@ -23,24 +23,7 @@ function Layout({children}){
                     <p>Pizza app</p>
 
                 </div>
-                <div className='hidden md:block'>
-                    <ul className='flex gap-4'>
-                        <li className='hover:text-[#FF9110]'>
-                            {' '}
-                            <p>Menu{' '}</p>
-                        </li>
-                    
-                    
-                        <li className='hover:text-[#FF9110]'>
-                            {' '}
-                            <p>Service{' '}</p>
-                        </li>
-                        <li className='hover:text-[#FF9110]'>
-                            {' '}
-                            <p>About{' '}</p>
-                        </li>
-                    </ul>
-                </div>
+                
                 <div>
                     <ul className='flex flex-row justify-center items-center gap-4'>
                         <li>

@@ -182,11 +182,11 @@ function Home() {
                 <h1 className="mb-2 text-5xl font-bold text-transparent title-font bg-gradient-to-r from-orange-600 to-orange-300 bg-clip-text text-center mb-20">
                     Menu
                 </h1>
-                <div className="flex flex-wrap justify-center">
+                <div className="flex flex-wrap justify-center mb-20">
                     {productsData.map((item) => {
                         return (
                             item.inStock && (
-                                <div className="p-4 md:w-1/3" key={item._id}>
+                                <div className="p-4 md:w-1/3 p-10" key={item._id}>
                                     <Link to={`/product/${item._id}`} >
                                     <div className="overflow-hidden border rounded-lg border border-opacity-60">
                                         <img 
