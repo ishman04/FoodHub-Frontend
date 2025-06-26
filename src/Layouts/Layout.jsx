@@ -1,58 +1,82 @@
-import { useDispatch, useSelector } from 'react-redux'
-import PizzaLogo from '../assets/images/Pizza-logo.png'
-import Footer from '../Components/Footer'
-import { Link,useNavigate } from 'react-router-dom'
-import { logout } from '../Redux/Slices/AuthSlice'
-import cart from '../Components/SVGs/undraw_empty_cart_co35.svg'
+import { useDispatch, useSelector } from "react-redux";
+import PizzaLogo from "../assets/images/Pizza-logo.png";
+import Footer from "../Components/Footer";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../Redux/Slices/AuthSlice";
+import cart from "../Components/SVGs/undraw_empty_cart_co35.svg";
+import NavigationBar from "@/Components/Navigation Bar/NavigationBar";
 
-function Layout({children}){
-    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn)
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    async function handleLogout(e) {
-        e.preventDefault();
-        dispatch(logout());
-    }
-    const {cartsData} = useSelector((state)=>state.cart)
+function Layout({ children }) {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    return (
-        <div>
-            <nav className="flex items-center justify-around h-16 text-[#6B7280] font-mono border-none shadow-md">
-                <div onClick={() =>navigate('/')}  className="flex items-center justify-center">
-                    <img className='w-20 h-20' src={PizzaLogo} alt="Pizza logo" />
-                    <p>Pizza app</p>
+  async function handleLogout(e) {
+    e.preventDefault();
+    await dispatch(logout());
+  }
 
-                </div>
-                
-                <div>
-                    <ul className='flex flex-row justify-center items-center gap-4'>
-                        <li>
-                            {isLoggedIn ? (
-                                <Link onClick={handleLogout}>Logout</Link>
-                            ) : (
-                                <Link to={'/auth/login'}>Login</Link>
-                            ) }
-                        </li>
-                        <li className='hover:text-[#FF9110]'>
-                            {isLoggedIn &&
-                                (<Link to={'/cart'}>
-                                    <div className='flex items-center '>
-                                        <img src={cart} className='w-8 h-8' />
-                                        {' '}
-                                       <p className='text-black'> {cartsData?.items?.length || 0} </p> 
-                                    </div>
-                                </Link>
-                        )}
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            {children}
-            <footer>
-                <Footer />
-            </footer>
+  const { cartsData } = useSelector((state) => state.cart);
+
+  return (
+    <div className="min-h-screen flex flex-col font-sans">
+      {/* NAVBAR */}
+      <nav className="flex items-center justify-between px-6 shadow-md bg-white text-gray-700">
+        {/* Mobile Sidebar Menu Icon */}
+        <div >
+          <NavigationBar />
         </div>
-    )
+
+        {/* Logo Section */}
+        <div
+          onClick={() => navigate("/")}
+          className="flex items-center gap-3 cursor-pointer"
+        >
+          <img src={PizzaLogo} width={120} height={120}  alt="Pizza logo" />
+          <p className="text-6xl poppins-bold text-orange-600">Pizza App</p>
+        </div>
+
+        {/* Right Section */}
+        <div className="hidden md:flex items-center gap-6 text-lg">
+          {isLoggedIn ? (
+            <Link
+              onClick={handleLogout}
+              className="hover:text-orange-500 transition"
+            >
+              Logout
+            </Link>
+          ) : (
+            <Link
+              to={"/auth/login"}
+              className="hover:text-orange-500 transition"
+            >
+              Login
+            </Link>
+          )}
+
+          {isLoggedIn && (
+            <Link
+              to={"/cart"}
+              className="flex items-center gap-2 hover:text-orange-500 transition"
+            >
+              <img src={cart} className="w-7 h-7" />
+              <span className="text-base font-medium text-gray-800">
+                {cartsData?.items?.length || 0}
+              </span>
+            </Link>
+          )}
+        </div>
+      </nav>
+
+      {/* MAIN CONTENT */}
+      <main className="flex-1">{children}</main>
+
+      {/* FOOTER */}
+      <footer className="mt-auto">
+        <Footer />
+      </footer>
+    </div>
+  );
 }
 
-export default Layout
+export default Layout;

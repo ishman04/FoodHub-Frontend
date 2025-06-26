@@ -32,7 +32,7 @@ function Order() {
             return;
         }
 
-        const response = await dispatch(placeOrder());
+        const response = await dispatch(placeOrder(details));
         console.log("ans",response)
 
         if (response?.payload?.data) {

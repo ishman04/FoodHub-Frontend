@@ -10,15 +10,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAllProducts } from "../Redux/Slices/ProductSlice";
 import { Link } from "react-router-dom";
+import NavigationBar from "@/Components/Navigation Bar/NavigationBar";
 
 function Home() {
-    const dispatch = useDispatch();
-    useEffect(() => { //called at first time load only
-        dispatch(getAllProducts());
-    },[])
-    const {productsData} = useSelector((state)=>state.product)
-    const scrollToSection = ()=> {document.getElementById("target").scrollIntoView({behavior: "smooth"})
-}
+    
+    
     return (
         <Layout>
         <div>
@@ -34,7 +30,7 @@ function Home() {
                     </div>
                     <p className="pb-4 text-[#6B7280]">Enjoy the best pizza of the town from comfort of your home</p>
 
-                    <button onClick={scrollToSection} className="flex items-center px-4 py-2 text-white bg-orange-400 rounded-md hover:bg-orange-500 group">
+                    <button id="orderNow" className="flex items-center px-4 py-2 text-white bg-orange-400 rounded-md hover:bg-orange-500 group">
                         Order Now
                         <span className="inline-block ml-2 transition-transform ease-in-out group-hover:translate-x-2">
                             <IconArrowRight />
@@ -157,63 +153,8 @@ function Home() {
                 </div>
             </section>
 
-            <section>
-                <div className="flex">
-                    <div className="m-10">
-                    <iframe className="rounded-lg" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d112083.64852786028!2d77.06377248494194!3d28.611354047667078!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce1f0e953711f%3A0x844a573e77077c2a!2sPizza%20Hut!5e0!3m2!1sen!2sin!4v1730005874176!5m2!1sen!2sin" 
-                    width="800" 
-                    height="450" 
-                    style={{border:0 }}
-                    allowFullScreen="" 
-                    loading="lazy" 
-                    referrerPolicy="no-referrer-when-downgrade">
-                    </iframe>
-                    </div>
-                    <div className="mt-10 ml-10 flex flex-col w-full items-center">
-                        <h2 className="text-5xl font-bold text-orange-500">About</h2>
-                        <p className="mt-10 leading-relaxed text-xl text-[#6B7280]">
-                        At Pizza Hut, we’re passionate about delivering the perfect pizza experience. From our signature pan pizzas to our famous stuffed crust, each pie is made with high-quality ingredients and crafted to satisfy. We offer a variety of menu options, including wings, pasta, sides, and desserts, all designed to complement our pizzas. With convenient dine-in, takeaway, and delivery services, Pizza Hut makes it easy to enjoy a delicious meal anytime, anywhere. Our commitment to flavor, freshness, and great deals ensures every order is a satisfying experience for friends, families, and pizza lovers alike.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <div id="target" className="mx-auto mt-20">
-                <h1 className="mb-2 text-5xl font-bold text-transparent title-font bg-gradient-to-r from-orange-600 to-orange-300 bg-clip-text text-center mb-20">
-                    Menu
-                </h1>
-                <div className="flex flex-wrap justify-center mb-20">
-                    {productsData.map((item) => {
-                        return (
-                            item.inStock && (
-                                <div className="p-4 md:w-1/3 p-10" key={item._id}>
-                                    <Link to={`/product/${item._id}`} >
-                                    <div className="overflow-hidden border rounded-lg border border-opacity-60">
-                                        <img 
-                                        src={item.productImage}
-                                        className="object-cover object-center w-full h-56 lg:h-48 md:h-36" />
-                                        <div className="p-6 border">
-                                            <h2 className="text-xs font-medium  tracking-widest text-gray-400 title-font">
-                                                {item.category}
-                                            </h2>
-                                            <h1 className="mb-3 text-lg font medium text-gray-900 title-font">
-                                                {item.name}
-                                            </h1>
-                                            <p className="mb-4 text-base leading-relaxed">
-                                                {item.description}
-                                            </p>
-                                            <p className="text-lg font medium ">
-                                            &#8377; {item.price}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    </Link>
-                                </div>
-                            )
-                        )
-                    })}
-                </div>
-            </div>
+            
+            
         </div>
         </Layout>
     )

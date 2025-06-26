@@ -6,9 +6,9 @@ const initialState = {
     ordersData: null
 }
 
-export const placeOrder = createAsyncThunk('/order/placeOrder', async (_, thunkAPI) => {
+export const placeOrder = createAsyncThunk('/order/placeOrder', async (details, thunkAPI) => {
     try {
-        const response = await axiosInstance.post(`/order/create`);
+        const response = await axiosInstance.post(`/order/create`,details);
         toast.success('Order created successfully');
         return response.data; // Only return the data object
     } catch (error) {
@@ -17,6 +17,7 @@ export const placeOrder = createAsyncThunk('/order/placeOrder', async (_, thunkA
     }
 });
 
+
 const OrderSlice = createSlice({
     name: "order",
     initialState,
@@ -24,7 +25,7 @@ const OrderSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(placeOrder.fulfilled, (state, action) => {
             state.ordersData = action.payload?.data;
-        });
+        })
     },
 });
 

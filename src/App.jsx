@@ -12,6 +12,8 @@ import CartDetails from './Pages/Cart/CartDetails'
 import OrderSuccess from './Pages/Order/OrderSuccess'
 import Order from './Pages/Order/Order'
 import RequireAuth from './Components/Auth/RequireAuth'
+import Menu from './Pages/Menu/Menu'
+import AboutUs from './Pages/About us/AboutUs'
 
 function App() {
   return (
@@ -32,7 +34,8 @@ function App() {
         <Route path='/order' element={<Order />} />
           <Route path='/order/success' element={<OrderSuccess />} />
         </Route>
-        
+        <Route path='/menu' element={<Menu/>}/>
+        <Route path='/about-us' element={<AboutUs/>}/>
       </Routes>
     </>
   )
