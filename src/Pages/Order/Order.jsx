@@ -14,7 +14,7 @@ function Order() {
 
     const [details, setDetails] = useState({
         paymentMethod: 'cash',
-        address: ''
+        address: JSON.parse(localStorage.getItem('selectedAddress')) || null
     });
 
     function handleUserInput(e) {
@@ -27,7 +27,7 @@ function Order() {
 
     async function handleFormSubmit(e) {
         e.preventDefault();
-        if (!details.paymentMethod || !details.address.trim()) {
+        if (!details.paymentMethod || !details.address) {
             toast.error('Please fill all the fields');
             return;
         }
@@ -81,22 +81,6 @@ function Order() {
                                 <option value="cash">Cash</option>
                                 <option value="card">Card</option>
                             </select>
-                        </div>
-
-                        <div className="relative flex-grow w-full my-5">
-                            <label
-                                htmlFor="address"
-                                className="leading-7 text-2xl text-gray-600"
-                            >
-                                Address
-                            </label>
-                            <textarea
-                                name="address"
-                                placeholder="Enter your address here..."
-                                onChange={handleUserInput}
-                                className="w-full p-2 border rounded-md focus:outline-none focus:border-primary-500 bg-white text-gray-700"
-                                value={details.address}
-                            />
                         </div>
 
                         <button
