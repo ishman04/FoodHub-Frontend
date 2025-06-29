@@ -17,6 +17,7 @@ import AboutUs from './Pages/About us/AboutUs'
 import LocationSearch from './Pages/Location/Location'
 import SelectSavedAddress from './Pages/Location/SelectSavedAddress'
 import Orders from './Pages/Order/Orders'
+import LocationGuard from './Components/Location/LocationGuard'
 
 function App() {
   return (
@@ -32,16 +33,18 @@ function App() {
 
         <Route element={<RequireAuth/>}>
           {/* ProductId will be passes automatically to ProductDetails component using useParams */}
-        <Route path='/product/:productId' element={<ProductDetails />} /> 
-        <Route path='/cart' element={<CartDetails />} />
-        <Route path='/order' element={<Order />} />
-          <Route path='/order/success' element={<OrderSuccess />} />
+          <Route element={<LocationGuard />}>
+            <Route path='/product/:productId' element={<ProductDetails />} /> 
+            <Route path='/cart' element={<CartDetails />} />
+            <Route path='/order' element={<Order />} />
+            <Route path='/order/success' element={<OrderSuccess />} />
+            <Route path="/orders" element={<Orders />} />
+          </Route> 
         </Route>
-        <Route path='/menu' element={<Menu/>}/>
-        <Route path='/about-us' element={<AboutUs/>}/>
         <Route path='/select-address' element = {<LocationSearch/>}/>
         <Route path='/user-addresses' element ={<SelectSavedAddress/>} />
-        <Route path="/orders" element={<Orders />} />
+        <Route path='/menu' element={<Menu/>}/>
+        <Route path='/about-us' element={<AboutUs/>}/>
       </Routes>
     </>
   )

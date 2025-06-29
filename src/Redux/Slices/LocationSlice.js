@@ -3,11 +3,11 @@ import axiosInstance from '../../helpers/axiosInstance';
 import toast from 'react-hot-toast';
 
 const initialState = {
-  location: null,            // { lat, lng, address }
-  isDeliverable: null,       // true/false
+  location: localStorage.getItem('selectedAddress') || null,            // { lat, lng, address }
+  isDeliverable: localStorage.getItem('selectedAddress') ? true : null,       // true/false
   loading: false,
   addresses: [],
-   loadingAddresses: false,
+  loadingAddresses: false,
 };
 
 export const fetchUserAddresses = createAsyncThunk(
