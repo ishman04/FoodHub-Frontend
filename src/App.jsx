@@ -16,6 +16,7 @@ import Menu from './Pages/Menu/Menu'
 import AboutUs from './Pages/About us/AboutUs'
 import LocationSearch from './Pages/Location/Location'
 import SelectSavedAddress from './Pages/Location/SelectSavedAddress'
+import Orders from './Pages/Order/Orders'
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
         <Route path='/about-us' element={<AboutUs/>}/>
         <Route path='/select-address' element = {<LocationSearch/>}/>
         <Route path='/user-addresses' element ={<SelectSavedAddress/>} />
+        <Route path="/orders" element={<Orders />} />
       </Routes>
     </>
   )

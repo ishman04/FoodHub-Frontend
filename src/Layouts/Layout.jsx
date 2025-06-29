@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../Redux/Slices/AuthSlice";
 import cart from "../Components/SVGs/undraw_empty_cart_co35.svg";
 import NavigationBar from "@/Components/Navigation Bar/NavigationBar";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaBoxOpen, FaMapMarkerAlt } from "react-icons/fa";
 
 function Layout({ children }) {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -50,13 +50,14 @@ function Layout({ children }) {
                 <FaMapMarkerAlt className="text-2xl text-orange-500" />
               </button>
 
-              {/* Logout Button */}
-              <Link
-                onClick={handleLogout}
-                className="hover:text-orange-500 transition"
+              {/* Orders Icon */}
+              <button
+                title="Your Orders"
+                onClick={() => navigate("/orders")}
+                className="hover:text-orange-500 transition transform hover:scale-110"
               >
-                Logout
-              </Link>
+                <FaBoxOpen className="text-2xl text-orange-500" />
+              </button>
 
               {/* Cart Icon */}
               <Link
@@ -67,6 +68,14 @@ function Layout({ children }) {
                 <span className="text-base font-medium text-gray-800">
                   {cartsData?.items?.length || 0}
                 </span>
+              </Link>
+
+              {/* Logout Button */}
+              <Link
+                onClick={handleLogout}
+                className="hover:text-orange-500 transition"
+              >
+                Logout
               </Link>
             </>
           )}

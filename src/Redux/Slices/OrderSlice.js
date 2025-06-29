@@ -17,6 +17,19 @@ export const placeOrder = createAsyncThunk('/order/placeOrder', async (details, 
     }
 });
 
+export const fetchAllOrders = createAsyncThunk(
+  '/order/fetchAll',
+  async (_, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get('/order');
+      return res.data.data;
+    } catch (error) {
+      toast.error("Failed to fetch orders");
+      return thunkAPI.rejectWithValue(error.response?.data);
+    }
+  }
+);
+
 
 const OrderSlice = createSlice({
     name: "order",
@@ -26,6 +39,9 @@ const OrderSlice = createSlice({
         builder.addCase(placeOrder.fulfilled, (state, action) => {
             state.ordersData = action.payload?.data;
         })
+        builder.addCase(fetchAllOrders.fulfilled, (state, action) => {
+  state.ordersData = action.payload;
+});
     },
 });
 
