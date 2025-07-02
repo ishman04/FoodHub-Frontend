@@ -43,7 +43,7 @@ const SelectSavedAddress = () => {
       placeName: address.placeName
     }));
 
-     navigate('/');
+     navigate(-1);
   };
 
   if (loadingAddresses || initialLoad) {
