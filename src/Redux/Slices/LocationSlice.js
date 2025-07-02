@@ -2,13 +2,16 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosInstance from '../../helpers/axiosInstance';
 import toast from 'react-hot-toast';
 
+const savedAddress = localStorage.getItem('selectedAddress');
+const parsedAddress = savedAddress && savedAddress !== 'null' ? JSON.parse(savedAddress) : null;
 const initialState = {
-  location: localStorage.getItem('selectedAddress') || null,            // { lat, lng, address }
-  isDeliverable: localStorage.getItem('selectedAddress') ? true : null,       // true/false
+  location: parsedAddress,
+  isDeliverable: parsedAddress ? true : false,
   loading: false,
   addresses: [],
   loadingAddresses: false,
 };
+
 
 export const fetchUserAddresses = createAsyncThunk(
   'location/fetchUserAddresses',
@@ -68,8 +71,9 @@ const LocationSlice = createSlice({
   reducers: {
     clearLocation: (state) => {
       state.location = null;
-      state.isDeliverable = null;
-    },
+      state.isDeliverable = false;
+      localStorage.removeItem('selectedAddress')
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -78,7 +82,7 @@ const LocationSlice = createSlice({
       })
       .addCase(checkLocationDelivery.fulfilled, (state, action) => {
         console.log("action",action)
-        state.isDeliverable = true;
+        state.isDeliverable = action.payload?.canDeliver || false;
         state.loading = false;
       })
       .addCase(checkLocationDelivery.rejected, (state) => {

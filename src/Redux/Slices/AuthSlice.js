@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../../helpers/axiosInstance";
 import toast from "react-hot-toast";
+import { clearLocation } from "./LocationSlice";
 
 const initialState = {
     isLoggedIn: (() => {
@@ -15,6 +16,8 @@ const initialState = {
         // If login time is expired, clear local storage
         localStorage.setItem('isLoggedIn', 'false');
         localStorage.removeItem('loginTime');
+        localStorage.removeItem('selectedAddress')
+        
         return false;
     })(),
     role: localStorage.getItem('role') || '',
@@ -52,7 +55,7 @@ export const login = createAsyncThunk('/auth/login', async (data) => {
     }
 });
 
-export const logout = createAsyncThunk('/auth/logout', async () => {
+export const logout = createAsyncThunk('/auth/logout', async (_,thunkAPI) => {
     try {
         const response = axiosInstance.post('/auth/logout');
         toast.promise(response, {
@@ -61,6 +64,7 @@ export const logout = createAsyncThunk('/auth/logout', async () => {
             error: 'Logout failed. Please try again.',
         });
         const apiResponse = await response;
+        thunkAPI.dispatch(clearLocation())
         return apiResponse;
     } catch (error) {
         console.log(error);
@@ -91,6 +95,7 @@ const AuthSlice = createSlice({
                 localStorage.setItem('role', '');
                 localStorage.setItem('data', JSON.stringify({}));
                 localStorage.removeItem('loginTime'); // Remove login timestamp
+                localStorage.removeItem('selectedAddress')
                 state.isLoggedIn = false;
                 state.role = '';
                 state.data = {};

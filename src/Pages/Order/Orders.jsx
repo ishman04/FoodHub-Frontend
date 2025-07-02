@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaClock, FaMapMarkerAlt, FaShoppingBasket, FaRupeeSign } from "react-icons/fa";
 import { fetchAllOrders } from "@/Redux/Slices/OrderSlice";
+import Layout from "@/Layouts/Layout";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -96,6 +97,8 @@ const Orders = () => {
   );
 
   return (
+    <Layout>
+
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-orange-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-10">
@@ -130,6 +133,7 @@ const Orders = () => {
         </div>
       </div>
     </div>
+    </Layout>
   );
 };
 

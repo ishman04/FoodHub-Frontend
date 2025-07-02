@@ -39,6 +39,8 @@ export const getProductDetails = createAsyncThunk('/products/getDetails', async(
     }
 })
 
+
+
 const ProductSlice = createSlice({
     name: 'product',
     initialState,
@@ -48,7 +50,8 @@ const ProductSlice = createSlice({
         .addCase(getAllProducts.fulfilled, (state, action) => {
             console.log("action",action.payload);
             state.productsData = action?.payload?.data;
-        });
+        })
+
     }
 });
 

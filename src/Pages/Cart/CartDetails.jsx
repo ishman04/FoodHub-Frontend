@@ -3,29 +3,13 @@ import { useDispatch } from "react-redux";
 import { getCartDetails, removeProductFromCart } from "../../Redux/Slices/CartSlice";
 import Layout from "../../Layouts/Layout";
 import { Link } from "react-router-dom";
+import { FaTrash, FaShoppingBag, FaArrowRight, FaArrowLeft } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
-// useState and Re-renders:
-// useState triggers a re-render of the entire component when the state value changes.
-// When you call a state updater function (like setCount or setName), React schedules a re-render of the component to reflect the new state.
-// However, when the component re-renders, React doesn't re-execute the entire component function from scratch. Instead, React will:
-
-// Re-render the component.
-// Preserve the component's state and variables between renders (React internally optimizes this with its virtual DOM).
-// Execute any useEffect hooks based on dependency changes.
-// 2. useEffect and Re-renders:
-// useEffect does not trigger a re-render. It simply runs the code inside it after the component has been rendered or after specific dependencies have changed.
-// useEffect allows you to perform side effects, such as data fetching or updating the DOM, but it does not re-render the component. It runs after React updates the DOM following a state change.
-// Key Differences:
-// State Change (useState):
-// When you call setState, React re-renders the component because it needs to reflect the updated state.
-
-// Effect (useEffect):
-// When a dependency of useEffect changes, the effect runs again. But it does not trigger a full re-render of the component. Instead, React updates the DOM based on state/prop changes, and the effect runs to handle the side effects.
 function CartDetails() {
   const [cartDetails, setCartDetails] = useState(null);
   const dispatch = useDispatch();
 
-  // Fetch cart details
   useEffect(() => {
     const fetchCartDetails = async () => {
       const details = await dispatch(getCartDetails());
@@ -34,7 +18,6 @@ function CartDetails() {
     fetchCartDetails();
   }, [dispatch]);
 
-  // Handle product removal
   async function handleRemove(productId) {
     const response = await dispatch(removeProductFromCart(productId));
     if (response?.payload?.data) {
@@ -42,7 +25,7 @@ function CartDetails() {
       setCartDetails(updatedDetails?.payload?.data || {});
     }
   }
-//calculated after each re render of component
+
   const cartItems = cartDetails?.items || [];
   const totalPrice = cartItems.reduce(
     (acc, item) => acc + item?.quantity * item?.product?.price,
@@ -51,82 +34,125 @@ function CartDetails() {
 
   return (
     <Layout>
-      <section className="py-8 md:py-16 antialiased">
+      <section className="py-8 md:py-16 bg-gradient-to-b from-amber-50 to-orange-50 min-h-screen">
         <div className="max-w-screen-xl px-4 mx-auto">
-          <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">Cart Details</h2>
+          <motion.h2 
+            className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-amber-500 mb-2"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            Your Pizza Cart
+          </motion.h2>
+          <p className="text-orange-600 mb-8">Review your delicious selections</p>
 
           {cartItems.length > 0 ? (
-            <div className="mt-6 lg:flex lg:items-start lg:gap-6">
+            <motion.div 
+              className="mt-6 lg:flex lg:items-start lg:gap-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
               {/* Cart Items */}
               <div className="lg:w-2/3 space-y-6">
                 {cartItems.map((item) => (
-                  <div
+                  <motion.div
                     key={item._id}
-                    className="p-4 bg-gradient-to-r from-amber-50 to-orange-300 rounded-lg shadow-sm border"
+                    className="p-6 bg-white rounded-xl shadow-md border border-orange-100 hover:shadow-lg transition-shadow"
+                    whileHover={{ y: -5 }}
                   >
                     <div className="md:flex md:items-center md:gap-6">
                       <img
-                        className="w-20 h-20 rounded-md"
+                        className="w-24 h-24 rounded-lg object-cover border-2 border-orange-200"
                         src={item?.product?.productImage}
                         alt={item?.product?.name || "Product"}
                       />
-                      <div className="flex-1">
+                      <div className="flex-1 mt-4 md:mt-0">
                         <Link
                           to={`/product/${item?._id}`}
-                          className="text-base font-medium text-gray-900 hover:underline"
+                          className="text-lg font-bold text-orange-700 hover:underline"
                         >
                           {item?.product?.name}
                         </Link>
-                        <p className="text-sm">{item?.product?.description}</p>
-                        <p className="text-sm font-semibold">
-                          ₹{item?.product?.price} x {item?.quantity}
-                        </p>
-                        <button
-                          onClick={() => handleRemove(item?.product?._id)}
-                          className="text-red-600 hover:underline text-sm font-medium"
-                        >
-                          Remove
-                        </button>
+                        <p className="text-orange-600 text-sm mt-1">{item?.product?.description}</p>
+                        <div className="flex items-center justify-between mt-3">
+                          <p className="text-orange-800 font-semibold">
+                            ₹{item?.product?.price} × {item?.quantity}
+                          </p>
+                          <motion.button
+                            onClick={() => handleRemove(item?.product?._id)}
+                            className="text-red-500 hover:text-red-600 flex items-center text-sm font-medium"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <FaTrash className="mr-1" /> Remove
+                          </motion.button>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
 
               {/* Order Summary */}
-              <div className="lg:w-1/3 p-6 bg-gradient-to-r from-amber-50 to-orange-300 rounded-lg shadow-sm border">
-                <h3 className="text-xl font-semibold">Order Summary</h3>
-                <div className="space-y-4 mt-4">
-                  {cartItems.map((item) => (
-                    <div key={item.product._id} className="flex justify-between">
-                      <p>
-                        {item?.product?.name} x {item?.quantity}
-                      </p>
-                      <p>₹{item?.quantity * item?.product?.price}</p>
+              <div className="lg:w-1/3 mt-6 lg:mt-0">
+                <div className="p-6 bg-white rounded-xl shadow-md border border-orange-100">
+                  <h3 className="text-xl font-bold text-orange-700 flex items-center">
+                    <FaShoppingBag className="mr-2 text-orange-500" />
+                    Order Summary
+                  </h3>
+                  <div className="space-y-4 mt-4">
+                    {cartItems.map((item) => (
+                      <div key={item.product._id} className="flex justify-between items-center">
+                        <p className="text-orange-800">
+                          {item?.product?.name} × {item?.quantity}
+                        </p>
+                        <p className="font-medium text-orange-700">₹{item?.quantity * item?.product?.price}</p>
+                      </div>
+                    ))}
+                    <div className="border-t border-orange-200 pt-4 flex justify-between font-bold text-lg">
+                      <span className="text-orange-800">Total</span>
+                      <span className="text-orange-600">₹{totalPrice}</span>
                     </div>
-                  ))}
-                  <div className="border-t pt-4 flex justify-between font-bold">
-                    <span>Total</span>
-                    <span>₹{totalPrice}</span>
                   </div>
-                </div>
 
-                <Link
-                  to="/order"
-                  className="block text-center bg-yellow-400 text-white rounded-md mt-6 py-2 hover:bg-yellow-500"
-                >
-                  Proceed to Checkout
-                </Link>
-                <Link
-                  to="/"
-                  className="block text-center text-sm font-medium text-primary-700 mt-4 underline"
-                >
-                  Continue Shopping
-                </Link>
+                  <motion.div
+                    className="mt-6 space-y-3"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <Link
+                      to="/order"
+                      className="block w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white rounded-xl py-3 px-4 text-center font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center"
+                    >
+                      Proceed to Checkout <FaArrowRight className="ml-2" />
+                    </Link>
+                    <Link
+                      to="/"
+                      className="block w-full text-center text-orange-600 hover:text-orange-700 font-medium mt-2 flex items-center justify-center"
+                    >
+                      <FaArrowLeft className="mr-2" /> Continue Shopping
+                    </Link>
+                  </motion.div>
+                </div>
               </div>
-            </div>
+            </motion.div>
           ) : (
-            <p className="mt-6 text-center text-gray-700">Your cart is empty.</p>
+            <motion.div 
+              className="mt-12 bg-white p-8 rounded-xl shadow-md border border-orange-100 text-center"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+            >
+              <h3 className="text-xl font-bold text-orange-700 mb-2">Your cart is empty</h3>
+              <p className="text-orange-600 mb-4">Add some delicious pizzas to get started!</p>
+              <Link
+                to="/menu"
+                className="inline-block bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white rounded-xl py-2 px-6 font-medium shadow-md hover:shadow-lg transition-all"
+              >
+                Browse Menu
+              </Link>
+            </motion.div>
           )}
         </div>
       </section>
@@ -135,4 +161,3 @@ function CartDetails() {
 }
 
 export default CartDetails;
-

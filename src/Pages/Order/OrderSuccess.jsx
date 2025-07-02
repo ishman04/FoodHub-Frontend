@@ -3,6 +3,9 @@ import Layout from "../../Layouts/Layout";
 import OrderSuccessImage from "../../assets/Images/ordered-success.png"
 function OrderSuccess() {
     const navigate = useNavigate();
+    useEffect(() => {
+    localStorage.removeItem("paymentSuccess");
+  }, []);
     return (
         <Layout>
             <div className="flex flex-col justify-center items-center py-28">
