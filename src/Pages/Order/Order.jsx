@@ -40,6 +40,7 @@ function Order() {
     if (details.paymentMethod == "cash") {
       const response = await dispatch(placeOrder(details));
       if (response?.payload?.data) {
+        localStorage.setItem('paymentSuccess',true)
         toast.success("Order placed successfully");
         navigate("/order/success");
       } else {
