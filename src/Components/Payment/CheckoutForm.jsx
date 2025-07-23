@@ -8,6 +8,7 @@ import axiosInstance from "@/helpers/axiosInstance";
 import { placeOrder } from "@/Redux/Slices/OrderSlice";
 import toast from "react-hot-toast";
 import { FaLock, FaCreditCard } from "react-icons/fa";
+import {v4 as uuidv4} from 'uuid'
 
 const CheckoutForm = ({ amount, cartItems, addressId }) => {
   const stripe = useStripe();
@@ -22,6 +23,7 @@ const CheckoutForm = ({ amount, cartItems, addressId }) => {
     setProcessing(true);
 
     try {
+      const idempotencyKey = uuidv4()
       const response = await axiosInstance.post(
         "/payment/create-payment-intent",
         { 
@@ -31,7 +33,8 @@ const CheckoutForm = ({ amount, cartItems, addressId }) => {
             quantity: item.quantity
           })),
           addressId,
-          paymentMethod: 'card'
+          paymentMethod: 'card',
+          idempotencyKey
         }
       );
       const clientSecret = response.data.data.clientSecret;
