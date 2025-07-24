@@ -17,7 +17,9 @@ export const fetchUserAddresses = createAsyncThunk(
   'location/fetchUserAddresses',
   async (_, thunkAPI) => {
     try {
-      const res = await axiosInstance.get('/delivery/user-addresses');
+      const res = await axiosInstance.get('/delivery/user-addresses',{
+        withCredentials:true
+      });
       console.log(res.data.data)
       return res.data.data;
       
@@ -32,7 +34,9 @@ export const checkLocationDelivery = createAsyncThunk(
   'location/checkLocationDelivery',
   async (locationDetails, thunkAPI) => {
     try {
-      const res = await axiosInstance.post('/delivery/check-radius', locationDetails);
+      const res = await axiosInstance.post('/delivery/check-radius', locationDetails,{
+        withCredentials:true
+      });
       const data = res.data;
 
       if (!data?.isDeliverable) {
@@ -53,7 +57,9 @@ export const checkLocationDelivery = createAsyncThunk(
 
 export const createAddress = createAsyncThunk('/location/createAddress',async(addressDetails,thunkAPI) => {
   try {
-    const res = await axiosInstance.post('/delivery/create-address', addressDetails);
+    const res = await axiosInstance.post('/delivery/create-address', addressDetails,{
+      withCredentials:true
+    });
     if(res.status === 200 || res.status===201){
       toast.success("Address saved successfully")
       return res.data.data;

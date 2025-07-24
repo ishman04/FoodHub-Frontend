@@ -27,7 +27,9 @@ const initialState = {
 export const createAccount = createAsyncThunk('/auth/createAccount', async (data) => {
     console.log("incoming data to the thunk", data);
     try {
-        const response = axiosInstance.post('/users', data);
+        const response = axiosInstance.post('/users', data,{
+            withCredentials: true
+        });
         toast.promise(response, {
             success: (resolvedPromise) => resolvedPromise?.data?.message,
             loading: 'Hold back tight, we are registering your ID',
@@ -42,7 +44,9 @@ export const createAccount = createAsyncThunk('/auth/createAccount', async (data
 
 export const login = createAsyncThunk('/auth/login', async (data) => {
     try {
-        const response = axiosInstance.post('/auth/login', data);
+        const response = axiosInstance.post('/auth/login', data,{
+            withCredentials: true
+        });
         toast.promise(response, {
             success: (resolvedPromise) => resolvedPromise?.data?.message,
             loading: 'Logging you in...',

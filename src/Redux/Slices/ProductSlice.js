@@ -9,7 +9,7 @@ const initialState = {
 
 export const getAllProducts = createAsyncThunk('/products/getAll', async () => {
     try {
-        const products = axiosInstance.get('/product');
+        const products = axiosInstance.get('/product',{withCredentials:true});
         toast.promise(products, {
             loading: 'Loading all the products',
             error: 'Something went wrong',
@@ -25,7 +25,9 @@ export const getAllProducts = createAsyncThunk('/products/getAll', async () => {
 
 export const getProductDetails = createAsyncThunk('/products/getDetails', async(id)=>{
     try {
-        const product = axiosInstance.get(`/product/${id}`);
+        const product = axiosInstance.get(`/product/${id}`,{
+            withCredentials:true
+        });
         toast.promise(product, {
             loading: 'Loading the product',
             error: 'Something went wrong',

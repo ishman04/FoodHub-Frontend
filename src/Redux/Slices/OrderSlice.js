@@ -11,7 +11,9 @@ const initialState = {
 // Place new order
 export const placeOrder = createAsyncThunk('/order/placeOrder', async (details, thunkAPI) => {
   try {
-    const response = await axiosInstance.post(`/order/create`, details);
+    const response = await axiosInstance.post(`/order/create`, details,{
+      withCredentials:true
+    });
     toast.success('Order created successfully');
     return response.data;
   } catch (error) {
@@ -23,7 +25,9 @@ export const placeOrder = createAsyncThunk('/order/placeOrder', async (details, 
 // Fetch all user orders
 export const fetchAllOrders = createAsyncThunk('/order/fetchAll', async (_, thunkAPI) => {
   try {
-    const res = await axiosInstance.get('/order');
+    const res = await axiosInstance.get('/order',{
+      withCredentials:true
+    });
     return res.data.data;
   } catch (error) {
     toast.error("Failed to fetch orders");
@@ -34,7 +38,9 @@ export const fetchAllOrders = createAsyncThunk('/order/fetchAll', async (_, thun
 // Fetch pending orders for admin
 export const fetchPendingOrders = createAsyncThunk('/order/fetchPending', async (_, thunkAPI) => {
   try {
-    const res = await axiosInstance.get('/order/admin/pending-orders');
+    const res = await axiosInstance.get('/order/admin/pending-orders',{
+      withCredentials:true
+    });
     return res.data.data;
   } catch (error) {
     toast.error("Failed to fetch pending orders");
@@ -45,7 +51,9 @@ export const fetchPendingOrders = createAsyncThunk('/order/fetchPending', async 
 // Fetch delivered orders for admin
 export const fetchDeliveredOrders = createAsyncThunk('/order/fetchDelivered', async (_, thunkAPI) => {
   try {
-    const res = await axiosInstance.get('/order/admin/delivered-orders');
+    const res = await axiosInstance.get('/order/admin/delivered-orders',{
+      withCredentials:true
+    });
     return res.data.data;
   } catch (error) {
     toast.error("Failed to fetch delivered orders");
@@ -56,7 +64,9 @@ export const fetchDeliveredOrders = createAsyncThunk('/order/fetchDelivered', as
 // Update order status
 export const updateOrderStatus = createAsyncThunk('/order/updateStatus', async ({ orderId, status }, thunkAPI) => {
   try {
-    const res = await axiosInstance.patch(`/order/update/${orderId}/${status}`);
+    const res = await axiosInstance.patch(`/order/update/${orderId}/${status}`,{},{
+      withCredentials:true
+    });
     toast.success("Order status updated");
     thunkAPI.dispatch(fetchPendingOrders()); // Refresh pending orders after update
     return res.data;
