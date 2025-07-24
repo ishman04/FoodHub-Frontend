@@ -19,7 +19,7 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select";
+} from "../../Components/ui/select";
 
 const categoryOptions = [
   { label: "Vegetarian", value: "veg", icon: <FaPizzaSlice className="mr-2 text-orange-500" /> },
