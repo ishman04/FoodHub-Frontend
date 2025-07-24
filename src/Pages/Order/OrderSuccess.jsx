@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { FaCheckCircle, FaHome, FaShoppingBag } from "react-icons/fa";
 import Layout from "../../Layouts/Layout";
-import OrderSuccessImage from "../../assets/Images/ordered-success.png";
+import OrderSuccessImage from "../../assets/images/ordered-success.png";
 
 function OrderSuccess() {
     const navigate = useNavigate();
