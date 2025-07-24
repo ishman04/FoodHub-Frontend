@@ -61,6 +61,7 @@ const LocationSearch = () => {
         bounded: 1,
         'accept-language': 'en'
       },
+      withCredentials:true
     });
 
     setResults(res.data);

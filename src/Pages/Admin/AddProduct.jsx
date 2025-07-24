@@ -69,7 +69,7 @@ function AddProduct() {
     formData.append("productImage", image);
 
     try {
-      const res = axiosInstance.post("/product/create", formData);
+      const res = axiosInstance.post("/product/create", formData,{withCredentials:true});
       toast.promise(res, {
         loading: "Adding product...",
         success: "Product added successfully!",
