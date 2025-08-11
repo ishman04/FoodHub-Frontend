@@ -43,6 +43,7 @@ function UpdateMapView({ center }) {
 
 
 const MapComponent = ({ driverLocation, restaurantCoords, customerCoords }) => {
+    console.log("[MapComponent] Rendering with new driver location:", driverLocation);
     return (
         <MapContainer center={[driverLocation.lat, driverLocation.lng]} zoom={15} style={{ height: '100%', width: '100%', borderRadius: '1rem' }}>
             <TileLayer

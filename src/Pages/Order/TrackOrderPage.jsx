@@ -4,52 +4,92 @@ import { io } from 'socket.io-client';
 import Layout from '@/Layouts/Layout';
 import MapComponent from '@/Components/Map/MapComponent';
 import { useSelector } from 'react-redux';
-import { FaMotorcycle, FaSpinner } from 'react-icons/fa';
+import { FaMotorcycle, FaSpinner, FaExclamationCircle } from 'react-icons/fa';
 import { restaurantLat, restaurantLng } from '@/helpers/constants';
 
 const TrackOrderPage = () => {
+    // 1. Get orderId from the URL parameters
     const { orderId } = useParams();
+    
+    // 2. Get order details from Redux store to find the customer's address
     const { ordersData } = useSelector((state) => state.order);
-
     const currentOrder = ordersData?.find(o => o._id === orderId);
-    
-    // The driver starts at the restaurant
-    const restaurantCoords = { latitude: restaurantLat, longitude: restaurantLng };
-    const [driverLocation, setDriverLocation] = useState({ lat: restaurantLat, lng: restaurantLng });
-    const [isJourneyEnded, setIsJourneyEnded] = useState(false);
-    
-    useEffect(() => {
-        // Ensure we have an orderId before connecting
-        if (!orderId) return;
 
-        const socket = io(process.env.VITE_BACKEND_URL, {
+    // 3. Set up state
+    const restaurantCoords = { latitude: restaurantLat, longitude: restaurantLng };
+    const [driverLocation, setDriverLocation] = useState(null); // Start as null to show a loading state
+    const [isJourneyEnded, setIsJourneyEnded] = useState(false);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        // --- KEY FIX: Defensive Programming ---
+        // If there's no orderId, don't do anything.
+        if (!orderId) {
+            console.error("[TrackOrderPage] No orderId provided in the URL.");
+            setError("No order ID found. Cannot track order.");
+            return;
+        }
+
+        console.log(`[TrackOrderPage] Mounting for orderId: ${orderId}`);
+
+        // Set the initial location so the map can render immediately
+        setDriverLocation({ lat: restaurantCoords.latitude, lng: restaurantCoords.longitude });
+
+        // --- Initialize Socket.IO connection ---
+        const socket = io(import.meta.env.VITE_BACKEND_URL, {
             withCredentials: true,
         });
 
-        socket.on('connect', () => {
-            console.log('[Frontend] Connected to WebSocket!');
-            const roomName = `order_${orderId}`;
-            socket.emit('joinOrderRoom', roomName);
-        });
+        // --- Define Event Handlers ---
+        const onConnect = () => {
+            console.log(`[Socket.IO] Frontend connected with ID: ${socket.id}`);
+            const roomToJoin = `order_${orderId}`;
+            console.log(`[Socket.IO] Emitting 'joinOrderRoom' to join room: '${roomToJoin}'`);
+            socket.emit('joinOrderRoom', roomToJoin);
+        };
 
-        socket.on('locationUpdate', (newLocation) => {
-            console.log("[Frontend] Received 'locationUpdate':", newLocation);
+        const onLocationUpdate = (newLocation) => {
+            console.log("[Socket.IO] Received 'locationUpdate' event with data:", newLocation);
             setDriverLocation(newLocation);
-        });
-        
-        socket.on('journeyEnded', (data) => {
-            console.log("[Frontend] Received 'journeyEnded':", data.message);
-            setIsJourneyEnded(true);
-        });
+        };
 
-        // Cleanup on component unmount
+        const onJourneyEnded = (data) => {
+            console.log("[Socket.IO] Received 'journeyEnded' event:", data.message);
+            setIsJourneyEnded(true);
+        };
+
+        // --- Attach Event Handlers ---
+        socket.on('connect', onConnect);
+        socket.on('locationUpdate', onLocationUpdate);
+        socket.on('journeyEnded', onJourneyEnded);
+
+        // --- Cleanup Logic ---
+        // This function will be called when the component is unmounted
         return () => {
+            console.log("[TrackOrderPage] Unmounting. Disconnecting socket.");
+            // Detach all listeners to prevent memory leaks
+            socket.off('connect', onConnect);
+            socket.off('locationUpdate', onLocationUpdate);
+            socket.off('journeyEnded', onJourneyEnded);
             socket.disconnect();
         };
-    }, [orderId]);
+
+    }, [orderId]); // The useEffect hook correctly depends on orderId
 
     const customerCoords = currentOrder?.address;
 
+    // --- RENDER LOGIC ---
+    if (error) {
+        return (
+            <Layout>
+                <div className="flex items-center justify-center h-[70vh] text-red-500">
+                    <FaExclamationCircle className="mr-3 text-2xl" />
+                    <span className="text-xl">{error}</span>
+                </div>
+            </Layout>
+        );
+    }
+    
     return (
         <Layout>
             <div className="min-h-screen bg-gradient-to-b from-orange-50 to-amber-50 py-8 px-4 sm:px-6">
@@ -71,7 +111,7 @@ const TrackOrderPage = () => {
                         ) : (
                             <div className="flex items-center justify-center h-full">
                                 <FaSpinner className="animate-spin text-4xl text-orange-500" />
-                                <p className="ml-4 text-gray-600">Waiting for driver location...</p>
+                                <p className="ml-4 text-gray-600">Initializing map and waiting for location...</p>
                             </div>
                         )}
                     </div>
