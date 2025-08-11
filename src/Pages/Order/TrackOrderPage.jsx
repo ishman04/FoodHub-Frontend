@@ -22,7 +22,7 @@ const TrackOrderPage = () => {
         // Ensure we have an orderId before connecting
         if (!orderId) return;
 
-        const socket = io(import.meta.env.VITE_BACKEND_URL, {
+        const socket = io(process.env.VITE_BACKEND_URL, {
             withCredentials: true,
         });
 
