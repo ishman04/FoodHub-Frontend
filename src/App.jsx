@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux';
 import AdminDeliveredOrders from './Pages/Admin/AdminDeliveredOrders';
 import CheckoutPage from './Pages/Stripe/CheckoutPage';
 import PaymentGuard from './Components/Payment/PaymentGuard';
+import TrackOrderPage from './Pages/Order/TrackOrderPage';
 
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
           // User routes wrapped with location protection
           <Route element={<LocationGuard />}>
             <Route path="/product/:productId" element={<ProductDetails />} />
+            <Route path='/track/:orderId' element={<TrackOrderPage/>} />
             <Route path="/cart" element={<CartDetails />} />
             <Route path="/order" element={<Order />} />
             <Route path="/orders" element={<Orders />} />

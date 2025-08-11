@@ -1,2 +1,2 @@
-export const restaurantLat = 28.6139
-export const restaurantLng = 77.2090
+export const restaurantLat = 30.6678
+export const restaurantLng = 76.8146

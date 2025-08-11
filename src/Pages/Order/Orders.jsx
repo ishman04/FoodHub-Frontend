@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaClock, FaMapMarkerAlt, FaShoppingBasket, FaRupeeSign } from "react-icons/fa";
+import { FaClock, FaMapMarkerAlt, FaShoppingBasket, FaRupeeSign, FaRoute } from "react-icons/fa";
 import { fetchAllOrders } from "@/Redux/Slices/OrderSlice";
 import Layout from "@/Layouts/Layout";
+import { Link } from "react-router-dom";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -93,6 +94,16 @@ const Orders = () => {
           </div>
         )}
       </div>
+      {order.status === 'out_for_delivery' && (
+        <div className="mt-4 pt-4 border-t border-orange-100">
+            <Link to={`/track/${order._id}`}>
+                 <button className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center gap-2">
+                    <FaRoute />
+                    Track Your Order Live
+                </button>
+            </Link>
+        </div>
+      )}
     </div>
   );
 
