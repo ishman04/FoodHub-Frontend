@@ -13,7 +13,7 @@ const TrackOrderPage = () => {
     
     // 2. Get order details from Redux store to find the customer's address
     const { ordersData } = useSelector((state) => state.order);
-    const currentOrder = ordersData?.find(o => o._id === orderId);
+    const currentOrder = ordersData?.find(o => o._id == orderId);
 
     // 3. Set up state
     const restaurantCoords = { latitude: restaurantLat, longitude: restaurantLng };

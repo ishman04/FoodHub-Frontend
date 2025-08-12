@@ -19,6 +19,7 @@ function Home() {
         { icon: <FaMotorcycle className="text-2xl sm:text-3xl text-orange-500" />, title: "Fast Delivery", desc: "Hot and fresh pizzas delivered to your door" },
         { icon: <FaSmile className="text-2xl sm:text-3xl text-orange-500" />, title: "Enjoy Food", desc: "Savor every bite of our delicious creations" }
     ];
+    console.log("Backend URL:", JSON.stringify(import.meta.env.VITE_BACKEND_URL));
 
     return (
         <Layout>
