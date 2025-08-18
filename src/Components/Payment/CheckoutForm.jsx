@@ -7,7 +7,7 @@ import axiosInstance from "@/helpers/axiosInstance";
 import { placeOrder } from "@/Redux/Slices/OrderSlice";
 import toast from "react-hot-toast";
 import { FaLock, FaCreditCard } from "react-icons/fa";
-import {v4 as uuidv4} from 'uuid'
+import { v4 as uuidv4 } from 'uuid';
 
 const CheckoutForm = ({ amount, cartItems, addressId }) => {
   const stripe = useStripe();
@@ -16,16 +16,19 @@ const CheckoutForm = ({ amount, cartItems, addressId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
+  const [idempotencyKey] = useState(uuidv4());
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!stripe || !elements) return;
     setProcessing(true);
 
     try {
-      const idempotencyKey = uuidv4()
+      // ❌ The key is no longer generated here.
       const response = await axiosInstance.post(
         "/payment/create-payment-intent",
-        { 
+        {
           amount,
           cart: cartItems.map((item) => ({
             product: item.product._id,
@@ -33,7 +36,7 @@ const CheckoutForm = ({ amount, cartItems, addressId }) => {
           })),
           addressId,
           paymentMethod: 'card',
-          idempotencyKey
+          idempotencyKey // ✅ Using the key from state
         }
       );
       const clientSecret = response.data.data.clientSecret;
@@ -43,8 +46,8 @@ const CheckoutForm = ({ amount, cartItems, addressId }) => {
         payment_method: {
           card: cardElement,
           billing_details: {
-            name: 'Customer Name',
-            email: 'customer@example.com'
+            name: 'Customer Name', // Recommended: Use actual customer name from state/props
+            email: 'customer@example.com' // Recommended: Use actual customer email
           },
         },
       });
@@ -60,7 +63,7 @@ const CheckoutForm = ({ amount, cartItems, addressId }) => {
       }
     } catch (err) {
       console.log(err);
-      toast.error("Payment failed");
+      toast.error("Payment failed. Please try again.");
     } finally {
       setProcessing(false);
     }
@@ -77,7 +80,7 @@ const CheckoutForm = ({ amount, cartItems, addressId }) => {
           Card Details
         </label>
         <div className="border border-orange-200 rounded-lg md:rounded-xl p-2 md:p-3 bg-orange-50">
-          <CardElement 
+          <CardElement
             options={{
               style: {
                 base: {
@@ -100,8 +103,8 @@ const CheckoutForm = ({ amount, cartItems, addressId }) => {
         type="submit"
         disabled={!stripe || processing}
         className={`w-full py-2 md:py-3 px-4 md:px-6 rounded-lg md:rounded-xl text-base md:text-lg font-semibold text-white shadow-lg transition-all flex items-center justify-center gap-2 ${
-          processing 
-            ? 'bg-amber-400' 
+          processing
+            ? 'bg-amber-400 cursor-not-allowed'
             : 'bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600'
         }`}
         whileHover={!processing ? { scale: 1.02 } : {}}
